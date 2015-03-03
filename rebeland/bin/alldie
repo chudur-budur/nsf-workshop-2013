@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# map ps -u atalukde | grep java | awk '{print $1}' | xargs kill -9
+
+mapbg killall java
+mapbg killall sleep
+mapbg killall ssh-agent
+mapbg killall -u atalukde
+

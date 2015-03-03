@@ -1,0 +1,109 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../../ec.params
+
+eval.problem = ec.app.mason.virus.MASONProblem
+# eval.problem.type = rastrigin
+
+state = 				ec.simple.SimpleEvolutionState
+init = 					ec.simple.SimpleInitializer
+finish = 	        		ec.simple.SimpleFinisher
+exch = 					ec.simple.SimpleExchanger
+breed =					ec.simple.SimpleBreeder
+eval =					ec.simple.SimpleEvaluator
+stat =					ec.simple.SimpleStatistics
+generations =				50
+quit-on-run-complete =			true
+pop = 					ec.Population
+pop.subpops =				1
+pop.subpop.0 = 				ec.Subpopulation
+pop.subpop.0.duplicate-retries =	2
+
+# The virus simulation parameters are integers, will be rounded during evaluations
+pop.subpop.0.species =                  ec.vector.IntegerVectorSpecies
+
+pop.subpop.0.species.pipe = 		ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.source.0 = 	ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.source.0 = ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1 = same
+
+pop.subpop.0.species.fitness =		ec.simple.SimpleFitness
+
+# The virus simulation parameters are integers, will be rounded during the evaluations
+pop.subpop.0.species.ind =		ec.vector.IntegerVectorIndividual
+
+pop.subpop.0.species.mutation-bounded =	true
+
+# Mind the expected ranges given in ECSuite.java
+# pop.subpop.0.species.min-gene =	-5.12
+# pop.subpop.0.species.max-gene =	5.12
+pop.subpop.0.species.min-gene =	1
+pop.subpop.0.species.max-gene =	10
+
+# ECJ will complain if this isn't set even if we don't use it, so here's a default
+pop.subpop.0.species.crossover-type = one
+
+select.tournament.size = 		2
+# pop.subpop.0.species.mutation-prob = 0.01
+# pop.subpop.0.species.mutation-stdev = 0.05
+# pop.subpop.0.species.mutation-type = gauss
+pop.subpop.0.species.mutation-prob = 0.01
+pop.subpop.0.species.mutation-type = random-walk
+pop.subpop.0.species.random-walk-probability = 0.01
+
+pop.subpop.0.size =			10
+
+# The MASON model that we are going to simulate
+mason-model = virus.VirusInfectionDemo
+mason-model.steps = 100
+mason-model.generalization-test = 10
+
+# There are 5 parameters in the virus simulation
+# Unfortunately we need to specify all of these
+pop.subpop.0.species.genome-size = 	5
+pop.subpop.0.species.num-segments =	5
+mason-model.num-params	=	5
+
+# We also need to specify these 
+pop.subpop.0.species.segment-type = start
+pop.subpop.0.species.segment.0.start = 0
+pop.subpop.0.species.segment.1.start = 1
+pop.subpop.0.species.segment.2.start = 2
+pop.subpop.0.species.segment.3.start = 3
+pop.subpop.0.species.segment.4.start = 4
+
+pop.subpop.0.species.segment-type = end
+pop.subpop.0.species.segment.0.end = 0
+pop.subpop.0.species.segment.1.end = 1
+pop.subpop.0.species.segment.2.end = 2
+pop.subpop.0.species.segment.3.end = 3
+pop.subpop.0.species.segment.4.end = 4
+
+# These are the parameters that are supposed 
+# to be optimized by ECJ
+mason-model.param.0 = VirusInfectionDemo.DIAMETER
+pop.subpop.0.species.min-gene.0	= 2
+pop.subpop.0.species.max-gene.0 = 10
+
+mason-model.param.1 = VirusInfectionDemo.HEALING_DISTANCE
+pop.subpop.0.species.min-gene.1	= 5
+pop.subpop.0.species.max-gene.1 = 40
+
+mason-model.param.2 = VirusInfectionDemo.INFECTION_DISTANCE 
+pop.subpop.0.species.min-gene.2	= 5
+pop.subpop.0.species.max-gene.2 = 40
+
+mason-model.param.3 = VirusInfectionDemo.NUM_GOODS
+pop.subpop.0.species.min-gene.3	= 4
+pop.subpop.0.species.max-gene.3 = 8
+
+mason-model.param.4 = VirusInfectionDemo.NUM_EVILS
+pop.subpop.0.species.min-gene.4	= 4
+pop.subpop.0.species.max-gene.4 = 8
+
+eval.parallel = false
+eval.num-threads = 2
+
+stat.file				$out.stat

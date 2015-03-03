@@ -1,0 +1,149 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../../gp/koza/koza.params
+
+gp.type.a.size = 3
+gp.type.a.0.name = boolean
+gp.type.a.1.name = nil
+gp.type.a.2.name = direction
+
+gp.tc.size = 1
+gp.tc.0 = ec.gp.GPTreeConstraints
+gp.tc.0.name = tc0
+gp.tc.fset = f0
+gp.tc.returns = nil
+
+gp.nc.size = 9
+
+# Atomic: no argument, no return type. E.g. (continue)
+gp.nc.0 = ec.gp.GPNodeConstraints
+gp.nc.0.name = atomic
+gp.nc.0.returns = nil
+gp.nc.0.size = 0
+
+# Directionals: no argument, returns <direction>. E.g. (N), (open-space)
+gp.nc.1 = ec.gp.GPNodeConstraints
+gp.nc.1.name = directional
+gp.nc.1.returns = direction
+gp.nc.1.size = 0
+
+# Action: A <direction> as argument, returns <nil>. E.g. (move N), (move open-space)
+gp.nc.2 = ec.gp.GPNodeConstraints
+gp.nc.2.name = action
+gp.nc.2.returns = nil
+gp.nc.2.size = 1
+gp.nc.2.child.0 = direction
+
+# Conditionals: Three arguments, first is <boolean> and the other two are <nil>'s,
+# and returns <nil>. E.g. (if (is-stuck) (move open-space) (move E))
+gp.nc.3 = ec.gp.GPNodeConstraints
+gp.nc.3.name = conditional
+gp.nc.3.returns = nil
+gp.nc.3.size = 3
+gp.nc.3.child.0 = boolean
+gp.nc.3.child.1 = nil
+gp.nc.3.child.2 = nil
+
+# Sensors: No argument, returns <boolean>. E.g. (is-stuck)
+gp.nc.4 = ec.gp.GPNodeConstraints
+gp.nc.4.name = sensor
+gp.nc.4.returns = boolean
+gp.nc.4.size = 0
+
+# Logical-Unitary: Takes one <boolean> argument and returns a <boolean>. E.g. (not is-stuck)
+gp.nc.5 = ec.gp.GPNodeConstraints
+gp.nc.5.name = logical-unitary
+gp.nc.5.returns = boolean
+gp.nc.5.size = 1
+gp.nc.5.child.0 = boolean
+
+# Logical-binray: Takes two <boolean> arguments and returns a <boolean>. E.g. (nand (is-stuck) (not is-stuck))
+gp.nc.6 = ec.gp.GPNodeConstraints
+gp.nc.6.name = logical-binary
+gp.nc.6.returns = boolean
+gp.nc.6.size = 2
+gp.nc.6.child.0 = boolean
+gp.nc.6.child.1 = boolean
+
+# Braching: Takes two <nil> arguments and returs <nil>. E.g. (progn2 (move N) (move open-space))
+gp.nc.7 = ec.gp.GPNodeConstraints
+gp.nc.7.name = binary-branching
+gp.nc.7.returns = nil
+gp.nc.7.size = 2
+gp.nc.7.child.0 = nil
+gp.nc.7.child.1 = nil
+
+# Braching: Takes three <nil> arguments and returs <nil>. E.g. (progn3 (move N) (move open-space) (move S))
+gp.nc.8 = ec.gp.GPNodeConstraints
+gp.nc.8.name = ternary-branching
+gp.nc.8.returns = nil
+gp.nc.8.size = 2
+gp.nc.8.child.0 = nil
+gp.nc.8.child.1 = nil
+gp.nc.8.child.2 = nil
+
+# gp.fs.0.size = 6
+# gp.fs.0.size = 7
+# gp.fs.0.size = 9
+# gp.fs.0.size = 10
+# gp.fs.0.size = 11
+gp.fs.0.size = 12
+# gp.fs.0.size = 13
+# gp.fs.0.size = 15
+
+# Atomic function
+gp.fs.0.func.0 = ec.app.mason.pacman.func.Continue
+gp.fs.0.func.0.nc = atomic
+
+# Directionals
+gp.fs.0.func.1 = ec.app.mason.pacman.func.East
+gp.fs.0.func.1.nc = directional
+gp.fs.0.func.2 = ec.app.mason.pacman.func.West
+gp.fs.0.func.2.nc = directional
+gp.fs.0.func.3 = ec.app.mason.pacman.func.North
+gp.fs.0.func.3.nc = directional
+gp.fs.0.func.4 = ec.app.mason.pacman.func.South
+gp.fs.0.func.4.nc = directional
+gp.fs.0.func.5 = ec.app.mason.pacman.func.OpenSpaceERC
+# gp.fs.0.func.5 = ec.app.mason.pacman.func.OpenSpace
+gp.fs.0.func.5.nc = directional
+
+# Actions
+gp.fs.0.func.6 = ec.app.mason.pacman.func.Move
+gp.fs.0.func.6.nc = action
+
+# Conditionals
+gp.fs.0.func.7 = ec.app.mason.pacman.func.If
+gp.fs.0.func.7.nc = conditional
+
+# Sensors
+gp.fs.0.func.8 = ec.app.mason.pacman.func.IsStuck
+gp.fs.0.func.8.nc = sensor
+gp.fs.0.func.9 = ec.app.mason.pacman.func.IsAGhostNearby
+gp.fs.0.func.9.nc = sensor
+
+# Logical-unitary
+gp.fs.0.func.10 = ec.app.mason.pacman.func.Not
+gp.fs.0.func.10.nc = logical-unitary
+
+# Logical-binary
+# gp.fs.0.func.10 = ec.app.mason.pacman.func.Nand
+# gp.fs.0.func.10.nc = logical-binary
+
+# Branching
+gp.fs.0.func.11 = ec.app.mason.pacman.func.Progn2
+gp.fs.0.func.11.nc = binary-branching
+
+#
+# We specify our problem here
+#
+eval.problem = ec.app.mason.pacman.MASONProblem
+# eval.problem.evaluation = recursive
+# eval.problem.max-death = 0
+
+# this is the GPData
+eval.problem.data = ec.app.mason.pacman.TypeData
+
+generations = 100

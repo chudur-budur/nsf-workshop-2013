@@ -1,0 +1,5 @@
+#!/bin/bash
+
+n=$(($1+2))
+
+top -b | grep -v total | grep -v "Cpu(s)" | grep -v "load average" | head -n $n

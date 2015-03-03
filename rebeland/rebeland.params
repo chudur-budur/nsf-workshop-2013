@@ -1,0 +1,110 @@
+# Copyright 2010 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../../multiobjective/multiobjective.params
+parent.1 = ../../../simple/simple.params
+
+# Be sure to set the multiobjective fitness size as shown in ../multiobjective.params
+# Likewise note tht ../multiobjective.params sets the statistics
+
+# We also use a special version of MultiObjectiveFitness
+pop.subpop.0.species.fitness =			ec.multiobjective.nsga2.NSGA2MultiObjectiveFitness
+
+# We have our own evaluator and breeder
+eval =						ec.multiobjective.nsga2.NSGA2Evaluator
+breed =						ec.multiobjective.nsga2.NSGA2Breeder
+
+# from nsga2.params, header includes ../../multiobjective/nsga2/nsga2.params
+
+# NSGA-II wil use a population size of 100.  Its archive will be another 100 
+# on top of that.  Since we're not reevaluating elites, only the 100 new
+# individuals will be bred and evaluated each generation.
+#
+# For more discussion about how to get SPEA2 and NSGA-II to have "equivalent"
+# numbers of evaluations in ECJ, see the README files for the SPEA2 and NSGA-II
+# packages.
+#
+# constants from  "Zitzler, E., Deb, K., and Thiele, L., 2000,
+# Comparison of Multiobjective Evolutionary Algorithms: Empirical Results,
+# Evolutionary Computation, Vol. 8, No. 2, pp173-195."
+#
+pop.subpop.0.size =                     2
+generations =                           4
+
+
+# NSGA2's pipeline
+
+pop.subpop.0.species.pipe		     	= ec.vector.breed.VectorMutationPipeline
+pop.subpop.0.species.pipe.likelihood        	= 1.0
+pop.subpop.0.species.pipe.source.0		= ec.vector.breed.VectorCrossoverPipeline
+pop.subpop.0.species.pipe.source.0.likelihood 	= 0.9
+pop.subpop.0.species.pipe.source.0.source.0 	= ec.select.TournamentSelection
+pop.subpop.0.species.pipe.source.0.source.1 	= same
+select.tournament.size 				= 2
+
+# Previously from the oosuite.params, header includes nsga2.params 
+# eval.problem = ec.app.moosuite.MooSuite
+# Now, we are using the RebelandProblem
+eval.problem = ec.app.mason.rebeland.RebeLandProblem
+
+#
+# optionally your type could be: zdt1, zdt2, zdt3, zdt4, zdt6, sphere
+#
+# Different problems has different default settings, so we suggest 
+# using the appropriate params file for each benchmark.
+#
+#
+# The above does not apply here now, now we are trying to maximize 
+# two criteria, average satisfaction of the people and
+# the total money stolen by the government.
+
+pop.subpop.0.species = ec.vector.FloatVectorSpecies
+pop.subpop.0.species.ind = ec.vector.DoubleVectorIndividual
+pop.subpop.0.species.fitness.num-objectives = 2
+pop.subpop.0.species.fitness.maximize = false
+seed.0 = time
+
+# Uncomment this if you'd like to force reevaluation of all archive
+# members each generation.
+#
+# breed.reevaluate-elites.0 = true
+
+
+# The multiobjective optimization routines here can use any crossover
+# and mutation pipeline you like, but the literature tends to stick with
+# SBX for crossover and Polynomial Mutation.  And with good reason: our
+# tests indicate that Polynomial Mutation is much better than Gaussian of
+# any setting for these problems.  And for SPEA2 at least, SBX seems to
+# outperform most other crossover operators.  Note that we're using the
+# "bounded" Polynomial Mutation variant, which seems to do a bit better.
+
+pop.subpop.0.species.crossover-type = sbx
+pop.subpop.0.species.crossover-distribution-index = 20
+
+pop.subpop.0.species.mutation-type = polynomial
+pop.subpop.0.species.mutation-distribution-index = 20
+pop.subpop.0.species.mutation-bounded = true
+
+# from zdt1.params, header includes moosuite.params
+
+# Although, these max and min ranges are going to
+# be overriden, we need to specicfy them anyway...
+pop.subpop.0.species.min-gene = 0
+pop.subpop.0.species.max-gene = 1
+
+# same as before.
+pop.subpop.0.species.mutation-prob = 0.0333
+
+# Now the genome size (RebeLand parameters) is 9, they are --
+# gene[0]: State's corruption rate,	[0.0-1.0], initial 0.1
+# gene[1]: State's tax rate,		[0.0-1.0], initial 0.2
+# gene[2]: State's max reserve rate,	[0.0-1.0], initial 0.8
+# gene[3]: State's min reserve rate,	[0.0-1.0], initial 0.2 and *needs to be smaller than the gene[2]*
+# gene[4]: Minimum benefit's share, 	[0.0-1.0], initial 0.2
+# gene[5]: Max police per capita,	[0.0-1.0], initial 0.1
+# gene[6]: Initial reserve army ratio,	[0.0-1.0], initial 0.2
+# gene[7]: Standing army size,		[0.0-1.0], initial 0.02
+# gene[8]: State's attack interval,	[0.0-1.0], initial 0.15
+pop.subpop.0.species.genome-size = 9
+

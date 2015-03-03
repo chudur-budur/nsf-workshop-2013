@@ -1,0 +1,18 @@
+# Copyright 2006 by Sean Luke and George Mason University
+# Licensed under the Academic Free License version 3.0
+# See the file "LICENSE" for more information
+
+parent.0 = ../../../gp/koza/koza.params
+
+gp.fs.0.size = 2
+gp.fs.0.func.0 = ec.app.mason.ant.func.Move
+gp.fs.0.func.0.nc = nc0
+gp.fs.0.func.1 = ec.app.mason.ant.func.Progn2
+gp.fs.0.func.1.nc = nc2
+
+#
+# We specify our problem here
+#
+
+eval.problem = ec.app.mason.ant.MASONProblem
+eval.problem.data = ec.gp.GPData

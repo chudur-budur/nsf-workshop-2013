@@ -1,0 +1,22 @@
+#!/bin/bash
+
+option=$1
+src=/media/Data/ECTools/ecj-repo/ecj/ec/app/rebelandecj
+dest=atalukde@hydra.cs.gmu.edu:/home/atalukde/workshop/ecj/ec/app/rebelandecj
+
+if [ $# -ne 1 ]; then
+	echo "Usage: ./updatehydra <-u> <-d>"
+	exit
+fi
+
+if [ $option = "-u" ]; then
+	echo "uploading ..."
+	scp -r $src/* $dest/		
+elif [ $option = "-d" ]; then
+	echo "downloading ..."
+	scp -r $dest/* $src/ 
+else
+	echo "error: unknown option"
+	echo "Usage: ./updatehydra <-u> <-d>"
+	exit
+fi

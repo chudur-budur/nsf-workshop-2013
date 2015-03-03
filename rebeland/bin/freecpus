@@ -1,0 +1,20 @@
+#!/bin/bash
+
+# compute the number of cpus
+cpus=`grep processor /proc/cpuinfo | wc | awk '{print $1;}' -`
+# 2 Intel CPUs with 4 cores show up as 16 due to 2x hyperthreading
+if [ $cpus -eq 16 ]; then
+	cpus=8
+fi
+
+# compute the approximate load and floor it to an integer
+load=`awk '{print $1;}' /proc/loadavg | awk -F. '{print $1;}' -`
+# add 1  to be conservative
+load=$(($load + 1))
+
+# figure the rough number of remaining cpus
+remainder=$(($cpus - $load))
+if [ $remainder -lt 0 ]; then
+	remainder=0
+fi
+echo $remainder

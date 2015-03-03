@@ -1,0 +1,7 @@
+#!/bin/bash
+
+urg=${@:2}
+echo "$urg"
+
+urug=${@:2}
+echo $urug

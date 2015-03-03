@@ -1,0 +1,30 @@
+-- Previously, had some problems with CUDA + MASON
+-- CSC people mainly cares about theoretical aspects of social science.
+
+Hybird models:
+-- like D-MASON and CUDA
+
+Issues:
+-- Fish model, could be parallelized to some extent and will be important as well.
+-- Need to show commonality of challenges in biological, ecological and social models how they could be benefited using parallel MASON framework.
+-- Need to find out "computationally intensive agents", also considering scale (i.e. large number of agents).
+-- Equation-solvers constantly running on GPU and pulled up by MASON agents time to time.
+-- Rob Axetel wants to model entire country's economy down to individual human level.
+-- Parallel parameter exploration in parallel, like MASON + ECJ + RebeLand.
+-- Advancing this topic (i.e. parallelization) will benefit everybody in many ways.
+-- Eliciting global and local actions of agents and need to understand how to distribute them.
+-- Multiple partition of the space depending on the scale, e.g. duck models.
+-- What if some portion of the model is not decomposable while they are sitting on decomposable space? e.g. RebeLand tax collection, space is decomposable but tax collection process is global.
+-- Partition on the agent level, reduces to network structure, which should be very important for AITIA people. 
+-- Network could be random, scale-free, dynamic or static -- will effect the distribution over multiple machines. This issue needs to be investigated.
+-- Local agents communicate with remote agents to gather global information -- what happens when both type of communication models are mixed?
+-- Small range interaction and large-global scale communication frequency may not be similar
+-- Core categories -- Spatial, Network and Agent-level partitioning
+-- How do parallel CFD (granular) models work? Is there any way to follow their approaches? (OpenFOAM?)
+-- Besides load-balancing, fault tolerance is also important, needs to have good roll-back mechanism.
+-- Check pointing, roll-back, snapshots etc needs to be implemented, we could steal some codes from Globus project. 
+-- Simpler messaging communications like MQ?
+-- How to adapt an already written serial model so that it could be made parallel with less amount of code modification?
+-- What about dimension change? if your model is already in 2D, how would make it portable to parallel system in 3D, load balancing will be a nightmare.
+-- How much research does involve in making a generic 2D load-balancing framework to a 3D one? little ??
+-- Heterogenous hardware, how to inpsect partitions and allocations?
