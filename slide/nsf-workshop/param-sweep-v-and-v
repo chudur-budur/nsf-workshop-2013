@@ -1,0 +1,38 @@
+o linkage btween mason and optimization 
+
+  - in order to prove that your agent rules, as well as your model is
+    accurate enough to be taken seriously
+
+  - for policy makers
+
+o model calibration
+o model validation
+o bugs and interesting behaviors
+o separation between a model and a sweeper
+
+o variation between, and specification of distributions/functions
+
+o parameter sweep _package_ in MASON
+
+  - parameter wizard?
+
+  - it makes it easier to a larger set of people to learn/understand
+    what it means to parameterize a model, sweep parameters, or
+    optimize parameters
+
+o linkage into other optimization packages, hooks, bridge code, etc.
+
+  - helps transition from other optimization/parameter tools to MASON's
+  - part of the validaiton goal
+
+  - rebeland - if we hadn't linked to ECJ we would have been shooting in the dark
+
+  - anecdote: a model with want to get distribution of various oucomes
+  based on useer defined distributions to search parameter space,
+  e.g. oil prediction 30 years ut, distributions of outcomes ratehr
+  than just "what is best"
+
+  - by providing some "gold standard" methods for parameter sweep/opt,
+    verif/valid. helps modelers/users to do this work, espeicially if
+    they don't already know how to do it.
+

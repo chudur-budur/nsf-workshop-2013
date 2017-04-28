@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- =============================================
+     Author:   Khaled
+     ============================================= -->
+
+
+<project name="nsf" basedir=".">
+	<!-- bootclasspath -->
+	<property name="java.boot.classpath" value="${env.CLASSPATH}"/>
+	<!-- Source path -->
+	<property name="src.dir" value="ecjpac"/>
+	<!-- Bin path -->
+	<property name="bin.dir" value="bin"/>
+	<!-- External libraries path -->
+	<property name="ext.jar.dir" value="lib"/>
+	<!-- adding the external libraries into the classpath, 
+	     this is needed if you are using the original source -->
+	<!-- now add the above stuffs -->
+	<path id="ext.libs">
+		<!-- if you are using the precompiled jars -->
+		<fileset dir="${ext.jar.dir}"></fileset>
+	</path>
+
+	<!-- ================ The description line ============== -->	
+	<description>
+		nsf: mason ecj workshop code
+	</description>
+
+	<!-- ==================== Clean Target ================== -->
+	<!--
+	  The "clean" target deletes any previous contents in the "bin" 
+	  directory, and/or the .class files, also deletes the vim 
+	  vestiges like .swp etc.
+	-->
+	<target name="clean" description="delete all the vestiges">
+		<delete verbose="true" failonerror="true" includeemptydirs="true">
+			<fileset dir="." defaultexcludes="no">
+				<include name="*.jar"/>
+				<include name="VAR*"/>
+				<include name="FUN*"/>
+				<include name="*.tsv"/>
+				<include name="*.out"/>
+				<include name="*.log"/>
+				<include name="*.log.*"/>
+			</fileset>
+			<fileset dir="${src.dir}" defaultexcludes="no">
+				<include name="**/*.class, **/.*.*.swp, **/*.*~"/>
+			</fileset>
+			<fileset dir="${bin.dir}" defaultexcludes="no"> 
+				<include name="**/*"/>
+				<exclude name=".dummy"/>
+			</fileset>
+		</delete>
+	</target>
+	
+	<!-- ==================== Compile Model ================ -->
+	<!--
+	  The "make" target compiles the java files.	  
+	-->
+	<target name="make" depends="clean" description="compile model sources">
+		<javac	classpathref="ext.libs"
+			srcdir="${src.dir}"
+			destdir="${bin.dir}"
+			includeantruntime="false"
+			debug="true"
+			optimize="true">
+			<compilerarg line="-Xlint:unchecked" />
+			<!--<compilerarg line="-Xbootclasspath:/opt/jdk1.8.0_40/jre/lib/rt.jar \
+				-target 1.8 -source 1.6 -Xlint:deprecation" />-->
+			<!--bootclasspath="${java.boot.classpath}">-->
+			<!--deprecation="false"-->
+		</javac>
+		<!-- copy some extra stuffs if in case we need -->
+		<copy todir="${bin.dir}">
+			<fileset dir="${src.dir}">
+				<include name="**/*.xml"/>
+			</fileset>
+		</copy>
+		<copy todir="${bin.dir}/ecjpac">
+			<fileset dir="${src.dir}">
+				<include name="**/*.png"/>
+				<include name="**/*.pbm"/>
+			</fileset>
+		</copy>
+	</target>
+
+	<!-- ================= Runs the compiled code ================= -->
+	<!-- This runs the compiled code -->
+	<target name="test" depends="make" description="test an evolved tree">
+		<record name="antlog.out"> </record>
+		<java classpathref="ext.libs" classname="ecjpac.Tester" fork="true">
+			<jvmarg value="-Djava.library.path=./lib"/>
+			<classpath>
+				<pathelement location="${bin.dir}/"/>
+			</classpath>
+			<!-- random seed -->
+			<arg value="-file"/>
+			<arg value="ecjpac/ecjpac.params"/>
+			<arg value="ecjpac/solutions/best-03.lisp"/>
+		</java>
+	</target>
+</project>
