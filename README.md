@@ -1,4 +1,4 @@
 nsf-workshop-2013
 =================
 
-Some random codes for nsf workshop 2013 at GMU.
+Codes for the NSF MASON/ECJ workshop summer 2013, GMU.
